@@ -35,9 +35,13 @@ public class JobService {
 
         job.updateJob(updateReq.getName());
 
-        jobRepository.save(job);    // 명시
+        List<Job> jobList = jobRepository.findAll();
 
-        return getJobList();
+        List<JobDTO.JobResp> jobRespList = jobList.stream()
+                .map(jobInfo -> new JobDTO.JobResp(jobInfo.getName()))
+                .collect(Collectors.toList());
+
+        return new JobDTO.JobListResp(jobRespList);
     }
 
     @Transactional
@@ -56,8 +60,6 @@ public class JobService {
         List<JobDTO.JobResp> jobRespList = jobList.stream()
                 .map(job -> new JobDTO.JobResp(job.getName()))
                 .collect(Collectors.toList());
-
-        jobRespList.add(new JobDTO.JobResp("전체"));
 
         return new JobDTO.JobListResp(jobRespList);
     }

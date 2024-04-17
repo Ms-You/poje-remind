@@ -26,6 +26,10 @@ public enum ErrorCode {
 
     // Job
     JOB_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "해당 직무를 찾을 수 없습니다."),
+
+    // License
+    LICENSE_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "해당 자격증 정보를 찾을 수 없습니다."),
+    LICENCE_ALREADY_ENROLLED(HttpStatus.BAD_REQUEST.value(), "이미 등록된 자격증입니다.")
     ;
 
 
