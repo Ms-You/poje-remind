@@ -24,6 +24,8 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "사용자를 찾을 수 없습니다."),
     MEMBER_NOT_MATCH(HttpStatus.BAD_REQUEST.value(), "아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요."),
 
+    // Job
+    JOB_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "해당 직무를 찾을 수 없습니다."),
     ;
 
 

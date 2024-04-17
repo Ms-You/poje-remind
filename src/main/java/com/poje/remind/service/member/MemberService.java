@@ -48,6 +48,8 @@ public class MemberService {
                 updateReq.getBirth(), "profileImg",
                 updateReq.getGitHubLink(), updateReq.getBlogLink());
 
+        memberRepository.save(member);  // 명시
+
         return MemberDTO.MemberResp.builder()
                 .member(member)
                 .build();

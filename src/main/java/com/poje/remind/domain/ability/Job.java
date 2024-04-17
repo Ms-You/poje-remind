@@ -29,4 +29,8 @@ public class Job extends BaseEntity {
     private Job(String name) {
         this.name = name;
     }
+
+    public void updateJob(String name) {
+        this.name = name;
+    }
 }
