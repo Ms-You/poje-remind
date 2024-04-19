@@ -1,5 +1,6 @@
 package com.poje.remind.repository.portfolio;
 
+import com.poje.remind.domain.Member.Member;
 import com.poje.remind.domain.ability.Job;
 import com.poje.remind.domain.portfolio.Portfolio;
 import jakarta.persistence.EntityManager;
@@ -41,6 +42,26 @@ public class PortfolioRepository {
                         "order by p.createdDate desc")
                 .setParameter("job", job)
                 .setParameter("keyword", keyword)
+                .setFirstResult(limit)
+                .setMaxResults(12)
+                .getResultList();
+    }
+
+    public List<Portfolio> findPortfolioWhichMemberLike(Member member) {
+        return em.createQuery("select distinct l.portfolio" +
+                        "from Like l" +
+                        "where l.member = :member" +
+                        "order by l.createdDate desc")
+                .setParameter("member", member)
+                .getResultList();
+    }
+
+    public List<Portfolio> findPortfolioWhichMemberLike(Member member, int limit) {
+        return em.createQuery("select distinct l.portfolio" +
+                        "from Like l" +
+                        "where l.member = :member" +
+                        "order by l.createdDate desc")
+                .setParameter("member", member)
                 .setFirstResult(limit)
                 .setMaxResults(12)
                 .getResultList();
