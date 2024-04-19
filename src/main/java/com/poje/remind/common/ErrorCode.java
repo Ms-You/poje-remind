@@ -29,7 +29,11 @@ public enum ErrorCode {
 
     // License
     LICENSE_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "해당 자격증 정보를 찾을 수 없습니다."),
-    LICENCE_ALREADY_ENROLLED(HttpStatus.BAD_REQUEST.value(), "이미 등록된 자격증입니다.")
+    LICENCE_ALREADY_ENROLLED(HttpStatus.BAD_REQUEST.value(), "이미 등록된 자격증입니다."),
+
+    // Portfolio
+    PORTFOLIO_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "포트폴리오를 찾을 수 없습니다."),
+    WRITER_NOT_MATCHED_PORTFOLIO(HttpStatus.BAD_REQUEST.value(), "작성자 정보가 일치하지 않습니다."),
     ;
 
 

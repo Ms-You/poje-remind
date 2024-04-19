@@ -57,4 +57,9 @@ public class Portfolio extends BaseEntity {
         writer.getPortfolioList().add(this);
         job.getPortfolioList().add(this);
     }
+
+    public void update(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 }
