@@ -34,6 +34,7 @@ public enum ErrorCode {
     // Portfolio
     PORTFOLIO_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "포트폴리오를 찾을 수 없습니다."),
     WRITER_NOT_MATCHED_PORTFOLIO(HttpStatus.BAD_REQUEST.value(), "작성자 정보가 일치하지 않습니다."),
+    PORTFOLIO_AWARD_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "포트폴리오 수상정보를 찾을 수 없습니다."),
     ;
 
 
