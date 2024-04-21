@@ -39,7 +39,7 @@ public class PortfolioSkillService {
                 () -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)
         );
 
-        if(portfolio.getWriter() != member) {
+        if(!portfolio.getWriter().equals(member)) {
             throw new GlobalException(ErrorCode.MEMBER_NOT_MATCH);
         }
 
@@ -67,7 +67,7 @@ public class PortfolioSkillService {
                 () -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)
         );
 
-        if(portfolio.getWriter() != member) {
+        if(!portfolio.getWriter().equals(member)) {
             throw new GlobalException(ErrorCode.MEMBER_NOT_MATCH);
         }
 

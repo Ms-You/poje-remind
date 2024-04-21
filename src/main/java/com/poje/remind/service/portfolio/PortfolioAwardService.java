@@ -35,7 +35,7 @@ public class PortfolioAwardService {
                 () -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)
         );
 
-        if(member != portfolio.getWriter()) {
+        if(!portfolio.getWriter().equals(member)) {
             throw new GlobalException(ErrorCode.MEMBER_NOT_MATCH);
         }
 

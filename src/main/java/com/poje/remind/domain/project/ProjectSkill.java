@@ -16,7 +16,6 @@ public class ProjectSkill extends BaseEntity {
     @Column(name = "project_skill_id")
     private Long id;
 
-    private String type;
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,11 +23,10 @@ public class ProjectSkill extends BaseEntity {
     private Project project;
 
     @Builder
-    private ProjectSkill(String type, String name, Project project) {
-        this.type = type;
+    private ProjectSkill(String name, Project project) {
         this.name = name;
         this.project = project;
 
-        project.getProjectSkillList().add(this);
+        project.getProjectSkillSet().add(this);
     }
 }

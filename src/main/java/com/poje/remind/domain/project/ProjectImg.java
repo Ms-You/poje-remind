@@ -27,7 +27,7 @@ public class ProjectImg extends BaseEntity {
         this.url = url;
         this.project = project;
 
-        project.getProjectImgList().add(this);
+        project.getProjectImgSet().add(this);
     }
 
 }

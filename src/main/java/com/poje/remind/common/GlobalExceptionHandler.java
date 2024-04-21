@@ -62,8 +62,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({InternalAuthenticationServiceException.class, BadCredentialsException.class})
     protected ResponseEntity<ErrorResponse> handleInternalAuthenticationServiceException() {
         return ResponseEntity
-                .status(ErrorCode.MEMBER_NOT_MATCH.getStatus())
-                .body(new ErrorResponse(ErrorCode.MEMBER_NOT_MATCH));
+                .status(ErrorCode.ID_OR_PASSWORD_WRONG.getStatus())
+                .body(new ErrorResponse(ErrorCode.ID_OR_PASSWORD_WRONG));
     }
 
     /**
