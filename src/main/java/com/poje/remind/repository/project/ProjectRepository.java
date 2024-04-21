@@ -19,7 +19,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "JOIN FETCH pr.portfolio pf " +
             "where pr.id = :projectId " +
             "and pf.writer.id = :memberId")
-    public Optional<Project> findByProjectIdAndMemberId(@Param("projectId") Long projectId,
+    Optional<Project> findByProjectIdAndMemberId(@Param("projectId") Long projectId,
                                                         @Param("memberId") Long memberId);
 
 }

@@ -25,6 +25,9 @@ public class ProjectService {
     private final PortfolioRepository portfolioRepository;
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
+    private final ProjectSkillService projectSkillService;
+    private final ProjectAwardService projectAwardService;
+    private final ProjectImgService projectImgService;
 
     @Transactional
     public void enrollBasicProject(Long portfolioId) {
@@ -66,6 +69,37 @@ public class ProjectService {
         return projectList.stream()
                 .map(ProjectDTO.ProjectResp::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateProject(Long portfolioId, Long projectId, ProjectDTO.UpdateReq updateReq) {
+        Member member = memberRepository.findByLoginId(SecurityUtil.getCurrentMember()).orElseThrow(
+                () -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(
+                () -> new GlobalException(ErrorCode.PORTFOLIO_NOT_FOUND)
+        );
+
+        if(!portfolio.getWriter().equals(member)) {
+            throw new GlobalException(ErrorCode.MEMBER_NOT_MATCH);
+        }
+
+        Project project = projectRepository.findByProjectIdAndMemberId(projectId, member.getId()).orElseThrow(
+                () -> new GlobalException(ErrorCode.PORTFOLIO_NOT_FOUND)
+        );
+
+        project.update(updateReq.getName(), updateReq.getDuration(), updateReq.getDescription(),
+                updateReq.getBelong(), updateReq.getLink());
+
+        // 프로젝트 수상 정보 수정
+        projectAwardService.updateAward(project, updateReq.getAward());
+
+        // 프로젝트 사용 기술 수정
+        projectSkillService.updateSkill(project, updateReq.getSkills());
+
+        // 프로젝트 이미지 수정
+        projectImgService.updateImage(project, updateReq.getImages());
     }
 
     @Transactional

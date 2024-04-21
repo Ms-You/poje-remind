@@ -34,17 +34,17 @@ public class PortfolioSkillRepository {
     }
 
     public List<String> findDistinctTypeByPortfolio(Portfolio portfolio) {
-        return em.createQuery("select distinct ps.type" +
-                        "from portfolioSkill ps" +
+        return em.createQuery("select distinct ps.type " +
+                        "from portfolioSkill ps " +
                         "where ps.portfolio = :portfolio")
                 .setParameter("portfolio", portfolio)
                 .getResultList();
     }
 
     public List<PortfolioSkill> findByPortfolioAndType(Portfolio portfolio, String type) {
-        return em.createQuery("select ps" +
-                        "from PortfolioSkill ps" +
-                        "where ps.portfolio = :portfolio" +
+        return em.createQuery("select ps " +
+                        "from PortfolioSkill ps " +
+                        "where ps.portfolio = :portfolio " +
                         "and ps.type = :type")
                 .setParameter("portfolio", portfolio)
                 .setParameter("type", type)
@@ -61,7 +61,7 @@ public class PortfolioSkillRepository {
                 .collect(Collectors.toList());
 
         em.createQuery("delete " +
-                        "from PortfolioSkill ps" +
+                        "from PortfolioSkill ps " +
                         "where ps.id in :idList")
                 .setParameter("idList", idList)
                 .executeUpdate();

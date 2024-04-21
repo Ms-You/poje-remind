@@ -29,4 +29,10 @@ public class ProjectAward extends BaseEntity {
 
         project.addProjectAward(this);
     }
+
+    public void update(String supervision, String grade, String description) {
+        this.supervision = supervision;
+        this.grade = grade;
+        this.description = description;
+    }
 }

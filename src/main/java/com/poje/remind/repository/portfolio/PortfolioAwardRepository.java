@@ -33,10 +33,10 @@ public class PortfolioAwardRepository {
     }
 
     public PortfolioAward findPortfolioAwardWithWriter(Long portfolioAwardId, Long memberId) {
-        return em.createQuery("select pa" +
-                        "from PortfolioAward pa" +
-                        "JOIN FETCH pa.portfolio p" +
-                        "where pa.id = :portfolioAwardId" +
+        return em.createQuery("select pa " +
+                        "from PortfolioAward pa " +
+                        "JOIN FETCH pa.portfolio p " +
+                        "where pa.id = :portfolioAwardId " +
                         "and p.writer.id = :memberId", PortfolioAward.class)
                 .setParameter("portfolioAwardId", portfolioAwardId)
                 .setParameter("memberId", memberId)

@@ -1,5 +1,6 @@
 package com.poje.remind.repository.project;
 
+import com.poje.remind.domain.project.Project;
 import com.poje.remind.domain.project.ProjectSkill;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -31,21 +32,18 @@ public class ProjectSkillRepository {
         em.remove(projectSkill);
     }
 
-    public List<String> findDistinctTypeByProjectId(Long projectId) {
-        return em.createQuery("select distinct ps.type" +
-                        "from ProjectSkill ps" +
-                        "where ps.project.id = :projectId")
-                .setParameter("projectId", projectId)
-                .getResultList();
+    public void deleteByProject(Project project) {
+        em.createQuery("delete from ProjectSkill ps " +
+                        "where ps.project = :project")
+                .setParameter("project", project)
+                .executeUpdate();
     }
 
-    public List<ProjectSkill> findByProjectIdAndType(Long projectId, String type) {
-        return em.createQuery("select ps" +
-                        "from ProjectSkill ps" +
-                        "where ps.project.id = :projectId" +
-                        "and ps.type = :type")
-                .setParameter("projectId", projectId)
-                .setParameter("type", type)
+    public List<ProjectSkill> findByProject(Project project) {
+        return em.createQuery("select distinct ps " +
+                        "from ProjectSkill ps " +
+                        "where ps.project = :project")
+                .setParameter("project", project)
                 .getResultList();
     }
 

@@ -10,6 +10,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -53,6 +54,22 @@ public class ProjectController {
         List<ProjectDTO.ProjectResp> projectRespList = projectService.getProjectList(portfolioId);
 
         return ResponseEntity.ok(new BasicResponse(HttpStatus.OK.value(), "프로젝트 목록 조회", projectRespList));
+    }
+
+    /**
+     * 프로젝트 수정
+     * @param portfolioId
+     * @param projectId
+     * @param updateReq
+     * @return
+     */
+    @PutMapping("/member/portfolio/{portfolio_id}/project/{project_id}")
+    public ResponseEntity<BasicResponse> updateProject(@PathVariable("portfolio_id") Long portfolioId,
+                                                       @PathVariable("project_id") Long projectId,
+                                                       @RequestBody ProjectDTO.UpdateReq updateReq) {
+        projectService.updateProject(portfolioId, projectId, updateReq);
+
+        return ResponseEntity.ok(new BasicResponse(HttpStatus.OK.value(), "프로젝트가 수정되었습니다."));
     }
 
     /**

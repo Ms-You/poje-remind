@@ -21,15 +21,15 @@ public class ProjectSkillDTO {
     }
 
     @Getter
+    @NoArgsConstructor
+    public static class UpdateReq {
+        private String name;
+    }
+
+    @Getter
     @AllArgsConstructor
     public static class ProjectSkillResp {
         private String name;
     }
-
-//    @Getter
-//    @AllArgsConstructor
-//    public static class ProjectSkillListResp {
-//        private List<ProjectSkillResp> skills;
-//    }
 
 }

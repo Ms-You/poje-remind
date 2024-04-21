@@ -3,11 +3,27 @@ package com.poje.remind.domain.project.dto;
 import com.poje.remind.domain.project.Project;
 import com.poje.remind.domain.project.ProjectImg;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProjectDTO {
+
+    @Getter
+    @NoArgsConstructor
+    public static class UpdateReq {
+        private Long projectId;
+        private String name;
+        private String duration;
+        private String description;
+        private String belong;
+        private String link;
+
+        private ProjectAwardDTO.UpdateReq award;
+        private List<ProjectSkillDTO.UpdateReq> skills;
+        private List<String> images;
+    }
 
     @Getter
     public static class ProjectResp {

@@ -35,10 +35,10 @@ public class PortfolioRepository {
     }
 
     public List<Portfolio> findPortfolioWithJobAndKeyword(Job job, String keyword, int limit) {
-        return em.createQuery("select distinct p" +
-                        "from Portfolio p" +
-                        "where p.job = :job" +
-                        "and p.title like CONCAT('%', :keyword, '%')" +
+        return em.createQuery("select distinct p " +
+                        "from Portfolio p " +
+                        "where p.job = :job " +
+                        "and p.title like CONCAT('%', :keyword, '%') " +
                         "order by p.createdDate desc")
                 .setParameter("job", job)
                 .setParameter("keyword", keyword)
@@ -48,18 +48,18 @@ public class PortfolioRepository {
     }
 
     public List<Portfolio> findPortfolioWhichMemberLike(Member member) {
-        return em.createQuery("select distinct l.portfolio" +
-                        "from Like l" +
-                        "where l.member = :member" +
+        return em.createQuery("select distinct l.portfolio " +
+                        "from Like l " +
+                        "where l.member = :member " +
                         "order by l.createdDate desc")
                 .setParameter("member", member)
                 .getResultList();
     }
 
     public List<Portfolio> findPortfolioWhichMemberLike(Member member, int limit) {
-        return em.createQuery("select distinct l.portfolio" +
-                        "from Like l" +
-                        "where l.member = :member" +
+        return em.createQuery("select distinct l.portfolio " +
+                        "from Like l " +
+                        "where l.member = :member " +
                         "order by l.createdDate desc")
                 .setParameter("member", member)
                 .setFirstResult(limit)
