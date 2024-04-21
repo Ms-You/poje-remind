@@ -2,7 +2,6 @@ package com.poje.remind.controller.project;
 
 import com.poje.remind.common.BasicResponse;
 import com.poje.remind.domain.project.dto.ProjectDTO;
-import com.poje.remind.domain.project.dto.ProjectImgDTO;
 import com.poje.remind.service.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
@@ -10,7 +9,6 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -64,12 +62,25 @@ public class ProjectController {
      * @return
      */
     @PutMapping("/member/portfolio/{portfolio_id}/project/{project_id}")
-    public ResponseEntity<BasicResponse> updateProject(@PathVariable("portfolio_id") Long portfolioId,
+    public ResponseEntity<EntityModel<BasicResponse>> updateProject(@PathVariable("portfolio_id") Long portfolioId,
                                                        @PathVariable("project_id") Long projectId,
                                                        @RequestBody ProjectDTO.UpdateReq updateReq) {
         projectService.updateProject(portfolioId, projectId, updateReq);
 
-        return ResponseEntity.ok(new BasicResponse(HttpStatus.OK.value(), "프로젝트가 수정되었습니다."));
+        BasicResponse basicResponse = new BasicResponse(HttpStatus.OK.value(), "프로젝트가 수정되었습니다.");
+        EntityModel<BasicResponse> model = EntityModel.of(basicResponse);
+
+        model.add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(this.getClass())
+                        .getProjectList(portfolioId))
+                .withRel("프로젝트 목록 조회 링크"));
+
+        model.add(WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(this.getClass())
+                                .deleteProject(portfolioId, projectId))
+                .withRel("프로젝트 삭제 링크"));
+
+        return ResponseEntity.ok(model);
     }
 
     /**
