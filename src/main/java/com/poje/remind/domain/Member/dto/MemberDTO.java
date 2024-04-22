@@ -7,6 +7,7 @@ public class MemberDTO {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class JoinReq {
         private String loginId;
         private String password;
@@ -20,6 +21,7 @@ public class MemberDTO {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class LoginReq {
         private String loginId;
         private String password;
