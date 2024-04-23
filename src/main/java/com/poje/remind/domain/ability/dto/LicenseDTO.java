@@ -11,6 +11,7 @@ public class LicenseDTO {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class CreateReq {
         private String name;
         private String issueInstitution;
@@ -19,6 +20,7 @@ public class LicenseDTO {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class UpdateReq {
         private String name;
         private String issueInstitution;

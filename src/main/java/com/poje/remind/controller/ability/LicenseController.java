@@ -36,7 +36,7 @@ public class LicenseController {
     public ResponseEntity<BasicResponse> updateLicense(LicenseDTO.UpdateReq updateReq) {
         LicenseDTO.LicenseListResp licenseListResp = licenseService.updateLicense(updateReq);
 
-        return ResponseEntity.ok(new BasicResponse(HttpStatus.OK.value(), "자격증 정보가 수정되었습니다."));
+        return ResponseEntity.ok(new BasicResponse(HttpStatus.OK.value(), "자격증 정보가 수정되었습니다.", licenseListResp));
     }
 
     /**
