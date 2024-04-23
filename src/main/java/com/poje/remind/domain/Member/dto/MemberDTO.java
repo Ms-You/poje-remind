@@ -29,6 +29,7 @@ public class MemberDTO {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class UpdateReq {
         private String nickName;
         private String email;
@@ -43,6 +44,7 @@ public class MemberDTO {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class PasswordUpdateReq {
         private String existsPassword;
         private String newPassword;
