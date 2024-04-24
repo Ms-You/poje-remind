@@ -47,7 +47,8 @@ public class Portfolio extends BaseEntity {
     private List<Like> likeList = new ArrayList<>();
 
     @Builder
-    private Portfolio(String title, String description, String backgroundImg, Member writer, Job job) {
+    private Portfolio(Long id, String title, String description, String backgroundImg, Member writer, Job job) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.backgroundImg = backgroundImg;

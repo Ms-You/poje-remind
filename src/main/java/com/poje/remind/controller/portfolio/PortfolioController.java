@@ -96,7 +96,7 @@ public class PortfolioController {
                                                          @RequestBody PortfolioDTO.UpdateReq updateReq) {
         PortfolioDTO.PortfolioInfoResp portfolioInfoResp = portfolioService.updatePortfolio(portfolioId, updateReq);
 
-        return ResponseEntity.ok(new BasicResponse(HttpStatus.CREATED.value(), "프토플리오가 수정되었습니다.", portfolioInfoResp));
+        return ResponseEntity.ok(new BasicResponse(HttpStatus.OK.value(), "프토플리오가 수정되었습니다.", portfolioInfoResp));
     }
 
     /**

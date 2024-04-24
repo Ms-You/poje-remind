@@ -14,6 +14,7 @@ public class PortfolioDTO {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class UpdateReq {
         private String title;
         private String description;
