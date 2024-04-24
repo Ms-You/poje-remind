@@ -11,28 +11,16 @@ public class PortfolioSkillDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PortfolioSkillReq {
+    public static class UpdateReq {
         private String name;
         private String path;
     }
 
     @Getter
     @NoArgsConstructor
-    public static class PortfolioSkillListReq {
-        private String type;
-        private List<PortfolioSkillReq> skillList;
-    }
-
-    @Getter
-    @NoArgsConstructor
-    public static class CreateReq {
-        private List<PortfolioSkillListReq> portfolioSkillListReqList;
-    }
-
-    @Getter
-    @NoArgsConstructor
-    public static class UpdateReq {
-        private List<PortfolioSkillListReq> portfolioSkillListReqList;
+    @AllArgsConstructor
+    public static class UpdateReqList {
+        private List<UpdateReq> updateReqList;
     }
 
     @Getter
@@ -43,10 +31,4 @@ public class PortfolioSkillDTO {
         private String path;
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class PortfolioSkillListResp {
-        private String type;
-        private List<PortfolioSKillResp> skillList;
-    }
 }

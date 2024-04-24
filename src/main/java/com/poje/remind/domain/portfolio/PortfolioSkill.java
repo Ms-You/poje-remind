@@ -16,8 +16,6 @@ public class PortfolioSkill extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "portfolio_skill_id")
     private Long id;
-
-    private String type;
     private String name;
     @Column(length = 500)
     private String path;
@@ -27,8 +25,7 @@ public class PortfolioSkill extends BaseEntity {
     private Portfolio portfolio;
 
     @Builder
-    private PortfolioSkill(String type, String name, String path, Portfolio portfolio) {
-        this.type = type;
+    private PortfolioSkill(String name, String path, Portfolio portfolio) {
         this.name = name;
         this.path = path;
         this.portfolio = portfolio;

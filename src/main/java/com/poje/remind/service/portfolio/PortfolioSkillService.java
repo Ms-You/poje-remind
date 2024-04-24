@@ -14,11 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -30,35 +26,7 @@ public class PortfolioSkillService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void enrollPortfolioSkill(Long portfolioId, PortfolioSkillDTO.CreateReq createReq) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(
-                () -> new GlobalException(ErrorCode.PORTFOLIO_NOT_FOUND)
-        );
-
-        Member member = memberRepository.findByLoginId(SecurityUtil.getCurrentMember()).orElseThrow(
-                () -> new GlobalException(ErrorCode.MEMBER_NOT_FOUND)
-        );
-
-        if(!portfolio.getWriter().equals(member)) {
-            throw new GlobalException(ErrorCode.MEMBER_NOT_MATCH);
-        }
-
-        for(PortfolioSkillDTO.PortfolioSkillListReq skillList : createReq.getPortfolioSkillListReqList()) {
-            for(PortfolioSkillDTO.PortfolioSkillReq skillReq : skillList.getSkillList()) {
-                PortfolioSkill portfolioSkill = PortfolioSkill.builder()
-                        .type(skillList.getType())
-                        .name(skillReq.getName())
-                        .path(skillReq.getPath())
-                        .portfolio(portfolio)
-                        .build();
-
-                portfolioSkillRepository.save(portfolioSkill);
-            }
-        }
-    }
-
-    @Transactional
-    public void updatePortfolioSkill(Long portfolioId, PortfolioSkillDTO.UpdateReq updateReq) {
+    public void updatePortfolioSkill(Long portfolioId, PortfolioSkillDTO.UpdateReqList updateReqList) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(
                 () -> new GlobalException(ErrorCode.PORTFOLIO_NOT_FOUND)
         );
@@ -72,64 +40,47 @@ public class PortfolioSkillService {
         }
 
         List<PortfolioSkill> currentSkills = portfolio.getPortfolioSkillList();
-        Map<String, PortfolioSkill> currentSkillMap = currentSkills.stream()
-                .collect(Collectors.toMap(PortfolioSkill::getName, Function.identity()));
 
-        Set<String> newSkillsSet = updateReq.getPortfolioSkillListReqList().stream()
-                .flatMap(skillSet -> skillSet.getSkillList().stream())
-                .map(PortfolioSkillDTO.PortfolioSkillReq::getName)
+        // 업데이트 하려는 스킬 목록
+        Set<String> newSkillsSet = updateReqList.getUpdateReqList().stream()
+                .map(PortfolioSkillDTO.UpdateReq::getName)
                 .collect(Collectors.toSet());
 
-        // 삭제할 기술
-        List<PortfolioSkill> skillsToDelete = currentSkills.stream()
+        // 기존 스킬 중 업데이트 되지 않는 스킬 삭제
+        currentSkills.stream()
                 .filter(skill -> !newSkillsSet.contains(skill.getName()))
-                .collect(Collectors.toList());
+                .forEach(portfolioSkillRepository::delete);
 
-        // 삭제할 기술 제거
-        portfolioSkillRepository.deleteAll(skillsToDelete);
-        currentSkills.removeAll(skillsToDelete);
+        for(PortfolioSkillDTO.UpdateReq updateSkill : updateReqList.getUpdateReqList()) {
+            // 기존에 같은 이름의 스킬이 있는지 확인
+            Optional<PortfolioSkill> existingSkillOpt = currentSkills.stream()
+                    .filter(skill -> skill.getName().equals(updateSkill.getName()))
+                    .findFirst();
 
-        // 새로운 기술 추가
-        for(PortfolioSkillDTO.PortfolioSkillListReq skillSet : updateReq.getPortfolioSkillListReqList()) {
-            for(PortfolioSkillDTO.PortfolioSkillReq skill : skillSet.getSkillList()) {
-                if(!currentSkillMap.containsKey(skill.getName())) {
-                    PortfolioSkill newSkill = PortfolioSkill.builder()
-                            .type(skillSet.getType())
-                            .name(skill.getName())
-                            .path(skill.getPath())
-                            .portfolio(portfolio)
-                            .build();
+            if(!existingSkillOpt.isPresent()) {
+                // 새로운 기술 저장
+                PortfolioSkill newSkill = PortfolioSkill.builder()
+                        .name(updateSkill.getName())
+                        .path(updateSkill.getPath())
+                        .portfolio(portfolio)
+                        .build();
 
-                    portfolioSkillRepository.save(newSkill);
-                }
+                portfolioSkillRepository.save(newSkill);
             }
         }
     }
 
-
     @Transactional(readOnly = true)
-    public List<PortfolioSkillDTO.PortfolioSkillListResp> getPortfolioSkill(Long portfolioId) {
+    public List<PortfolioSkillDTO.PortfolioSKillResp> getPortfolioSkill(Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(
                 () -> new GlobalException(ErrorCode.PORTFOLIO_NOT_FOUND)
         );
 
-        List<PortfolioSkillDTO.PortfolioSkillListResp> portfolioSkillListRespList = new ArrayList<>();
+        List<PortfolioSkill> skillList = portfolio.getPortfolioSkillList();
 
-        // 포트폴리오에서 사용하는 기술들의 type 목록을 가져옴
-        List<String> typeList = portfolioSkillRepository.findDistinctTypeByPortfolio(portfolio);
-
-        for(String type : typeList) {
-            List<PortfolioSkillDTO.PortfolioSKillResp> portfolioSKillRespList = new ArrayList<>();
-            List<PortfolioSkill> skillList = portfolioSkillRepository.findByPortfolioAndType(portfolio, type);
-
-            for(PortfolioSkill skill : skillList) {
-                portfolioSKillRespList.add(new PortfolioSkillDTO.PortfolioSKillResp(skill.getId(), skill.getName(), skill.getPath()));
-            }
-
-            portfolioSkillListRespList.add(new PortfolioSkillDTO.PortfolioSkillListResp(type, portfolioSKillRespList));
-        }
-
-        return portfolioSkillListRespList;
+        return skillList.stream()
+                .map(skill -> new PortfolioSkillDTO.PortfolioSKillResp(skill.getId(), skill.getName(), skill.getPath()))
+                .collect(Collectors.toList());
     }
 
 }

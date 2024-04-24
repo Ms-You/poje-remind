@@ -10,18 +10,6 @@ public class ProjectSkillDTO {
 
     @Getter
     @NoArgsConstructor
-    public static class CreateReq {
-        private String name;
-    }
-
-    @Getter
-    @NoArgsConstructor
-    public static class CreateListReq {
-        private List<CreateReq> skills;
-    }
-
-    @Getter
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateReq {
         private String name;
