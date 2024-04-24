@@ -1,5 +1,6 @@
 package com.poje.remind.domain.project.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,6 +8,7 @@ public class ProjectAwardDTO {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class UpdateReq {
         private String supervision;
         private String grade;

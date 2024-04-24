@@ -2,6 +2,7 @@ package com.poje.remind.domain.project.dto;
 
 import com.poje.remind.domain.project.Project;
 import com.poje.remind.domain.project.ProjectImg;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,6 @@ public class ProjectDTO {
     @Getter
     @NoArgsConstructor
     public static class UpdateReq {
-        private Long projectId;
         private String name;
         private String duration;
         private String description;
@@ -23,6 +23,19 @@ public class ProjectDTO {
         private ProjectAwardDTO.UpdateReq award;
         private List<ProjectSkillDTO.UpdateReq> skills;
         private List<String> images;
+
+        @Builder
+        private UpdateReq(Project project, ProjectAwardDTO.UpdateReq award, List<ProjectSkillDTO.UpdateReq> skills, List<String> images) {
+            this.name = project.getName();
+            this.duration = project.getDuration();
+            this.description = project.getDescription();
+            this.belong = project.getBelong();
+            this.link = project.getLink();
+
+            this.award = award;
+            this.skills = skills;
+            this.images = images;
+        }
     }
 
     @Getter

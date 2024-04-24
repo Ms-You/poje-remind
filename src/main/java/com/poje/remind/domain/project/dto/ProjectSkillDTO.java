@@ -22,6 +22,7 @@ public class ProjectSkillDTO {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class UpdateReq {
         private String name;
     }
