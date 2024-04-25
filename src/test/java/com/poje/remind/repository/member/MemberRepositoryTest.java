@@ -60,12 +60,13 @@ class MemberRepositoryTest {
 
         // then
         assertThat(findMember).isNotEmpty();
-        assertThat(findMember.get().getLoginId()).isEqualTo("testId001");
-        assertThat(findMember.get().getNickName()).isEqualTo("tester001");
-        assertThat(findMember.get().getGender()).isEqualTo("Male");
+        assertThat(findMember.get().getLoginId()).isEqualTo(member.getLoginId());
+        assertThat(findMember.get().getNickName()).isEqualTo(member.getNickName());
+        assertThat(findMember.get().getGender()).isEqualTo(member.getGender());
     }
 
     @Test
+    @DisplayName("Member 목록 조회 테스트")
     void findAll() {
         // given
         Member member1 = Member.builder()
