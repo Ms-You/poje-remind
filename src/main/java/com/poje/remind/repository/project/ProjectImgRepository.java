@@ -39,12 +39,4 @@ public class ProjectImgRepository {
     public void delete(ProjectImg projectImg) {
         em.remove(projectImg);
     }
-
-    public void deleteByProject(Project project) {
-        em.createQuery("delete pi " +
-                        "from ProjectImg pi " +
-                        "where pi.project = :project")
-                .setParameter("project", project)
-                .executeUpdate();
-    }
 }
