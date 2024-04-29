@@ -32,13 +32,6 @@ public class ProjectSkillRepository {
         em.remove(projectSkill);
     }
 
-    public void deleteByProject(Project project) {
-        em.createQuery("delete from ProjectSkill ps " +
-                        "where ps.project = :project")
-                .setParameter("project", project)
-                .executeUpdate();
-    }
-
     public List<ProjectSkill> findByProject(Project project) {
         return em.createQuery("select distinct ps " +
                         "from ProjectSkill ps " +
