@@ -28,10 +28,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import(PortfolioRepositoryTest.TestConfig.class)
-class PortfolioRepositoryTest {
+public class PortfolioRepositoryTest {
 
     @TestConfiguration
-    static class TestConfig {
+    public static class TestConfig {
         @Bean
         public PortfolioRepository portfolioRepository(EntityManager em) {
             return new PortfolioRepository(em);
