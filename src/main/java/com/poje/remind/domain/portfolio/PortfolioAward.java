@@ -34,4 +34,10 @@ public class PortfolioAward extends BaseEntity {
 
         portfolio.getPortfolioAwardList().add(this);
     }
+
+    public void update(String supervision, String grade, String description) {
+        this.supervision = supervision;
+        this.grade = grade;
+        this.description = description;
+    }
 }

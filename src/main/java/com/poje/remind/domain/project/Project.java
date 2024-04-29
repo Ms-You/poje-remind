@@ -8,8 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,10 +32,10 @@ public class Project extends BaseEntity {
     private Portfolio portfolio;
 
     @OneToMany(mappedBy = "project", orphanRemoval = true)
-    private List<ProjectImg> projectImgList = new ArrayList<>();
+    private Set<ProjectImg> projectImgSet = new HashSet<>();
 
     @OneToMany(mappedBy = "project", orphanRemoval = true)
-    private List<ProjectSkill> projectSkillList = new ArrayList<>();
+    private Set<ProjectSkill> projectSkillSet = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_award_id")
@@ -56,5 +56,14 @@ public class Project extends BaseEntity {
 
     public void addProjectAward(ProjectAward projectAward) {
         this.projectAward = projectAward;
+    }
+
+    public void update(String name, String duration, String description,
+                       String belong, String link) {
+        this.name = name;
+        this.duration = duration;
+        this.description = description;
+        this.belong = belong;
+        this.link = link;
     }
 }

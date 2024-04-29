@@ -66,4 +66,24 @@ public class Member extends BaseEntity {
         this.role = role;
     }
 
+    public void updateInfo(String nickName, String email, String phoneNum, String gender,
+                           String academic, String dept, String birth, String profileImg,
+                           String gitHubLink, String blogLink) {
+        this.nickName = nickName;
+        this.email = email;
+        this.phoneNum = phoneNum;
+        this.gender = gender;
+        this.birth = birth;
+        this.profileImg = profileImg;
+        this.academic = academic;
+        this.dept = dept;
+        this.gitHubLink = gitHubLink;
+        this.blogLink = blogLink;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+
 }

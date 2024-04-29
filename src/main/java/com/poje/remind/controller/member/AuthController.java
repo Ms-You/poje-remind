@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/auth")
 @RestController
 public class AuthController {
 
@@ -51,7 +51,7 @@ public class AuthController {
         refreshTokenCookie.setPath("/");      // 쿠키를 전송할 요청의 경로
         refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키의 유효 시간 - 7일
 
-        response.setHeader("Authorization", "Bearer" + tokenDTO.getAccessToken());
+        response.setHeader("Authorization", "Bearer " + tokenDTO.getAccessToken());
         response.addCookie(refreshTokenCookie);
 
         return ResponseEntity.ok(new BasicResponse(HttpStatus.OK.value(), "로그인 성공"));
