@@ -66,7 +66,7 @@ public class MemberService {
             throw new GlobalException(ErrorCode.PASSWORD_NOT_MATCHED);
         }
 
-        member.updatePassword(passwordUpdateReq.getNewPassword());
+        member.updatePassword(passwordEncoder.encode(passwordUpdateReq.getNewPassword()));
     }
 
 }
