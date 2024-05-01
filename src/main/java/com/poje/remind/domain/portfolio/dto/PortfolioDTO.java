@@ -34,7 +34,7 @@ public class PortfolioDTO {
 
         @Builder
         private PortfolioInfoResp(Portfolio portfolio, boolean likeStatus) {
-            this.id = id;
+            this.id = portfolio.getId();
             this.title = portfolio.getTitle();
             this.description = portfolio.getDescription();
             this.backgroundImg = portfolio.getBackgroundImg();
@@ -47,7 +47,7 @@ public class PortfolioDTO {
     @Getter
     @AllArgsConstructor
     public static class BasicPortfolioResp {
-        private Long id;
+        private Long portfolioId;
     }
 
     @Getter
