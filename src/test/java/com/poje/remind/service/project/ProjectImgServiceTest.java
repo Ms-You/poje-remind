@@ -5,13 +5,12 @@ import com.poje.remind.domain.Member.RoleType;
 import com.poje.remind.domain.ability.Job;
 import com.poje.remind.domain.portfolio.Portfolio;
 import com.poje.remind.domain.project.Project;
-import com.poje.remind.domain.project.ProjectSkill;
-import com.poje.remind.domain.project.dto.ProjectSkillDTO;
+import com.poje.remind.domain.project.ProjectImg;
 import com.poje.remind.repository.ability.JobRepository;
 import com.poje.remind.repository.member.MemberRepository;
 import com.poje.remind.repository.portfolio.PortfolioRepository;
+import com.poje.remind.repository.project.ProjectImgRepository;
 import com.poje.remind.repository.project.ProjectRepository;
-import com.poje.remind.repository.project.ProjectSkillRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,18 +29,22 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@Import(ProjectSkillService.class)
-class ProjectSkillServiceTest {
+@Import(ProjectImgService.class)
+class ProjectImgServiceTest {
 
     @Autowired
-    private ProjectSkillService projectSkillService;
+    private ProjectImgService projectImgService;
 
     @MockBean
-    private ProjectSkillRepository projectSkillRepository;
+    private ProjectImgRepository projectImgRepository;
+
+    @MockBean
+    private ProjectRepository projectRepository;
 
     @MockBean
     private MemberRepository memberRepository;
@@ -51,9 +54,6 @@ class ProjectSkillServiceTest {
 
     @MockBean
     private JobRepository jobRepository;
-
-    @MockBean
-    private ProjectRepository projectRepository;
 
     @MockBean
     private BCryptPasswordEncoder passwordEncoder;
@@ -120,40 +120,34 @@ class ProjectSkillServiceTest {
 
 
     @Test
-    @DisplayName("프로젝트 스킬 수정 테스트")
-    void updateSkill() {
+    @DisplayName("이미지 업로드 테스트")
+    void updateImage() {
         // given
-        ProjectSkill skill1 = ProjectSkill.builder()
-                .name("PYTHON")
+        ProjectImg projectImg1 = ProjectImg.builder()
+                .url("existingImage1")
                 .project(project)
                 .build();
 
-        ProjectSkill skill2 = ProjectSkill.builder()
-                .name("DJANGO")
+        ProjectImg projectImg2 = ProjectImg.builder()
+                .url("existingImage1")
                 .project(project)
                 .build();
 
-        List<ProjectSkillDTO.UpdateReq> updateReqList = List.of(
-                new ProjectSkillDTO.UpdateReq("JAVA"),
-                new ProjectSkillDTO.UpdateReq("SPRING"));
+        List<String> updateImages = List.of("newImage1", "newImage2");
 
-        // ArgumentCaptor 생성
-        ArgumentCaptor<ProjectSkill> skillCaptor = ArgumentCaptor.forClass(ProjectSkill.class);
+        ArgumentCaptor<ProjectImg> imgCaptor = ArgumentCaptor.forClass(ProjectImg.class);
 
         // when
-        when(projectSkillRepository.findByProject(project)).thenReturn(List.of(skill1, skill2));
-        projectSkillService.updateSkill(project, updateReqList);
+        when(projectImgRepository.findByProject(project)).thenReturn(List.of(projectImg1, projectImg2));
+        projectImgService.updateImage(project, updateImages);
 
         // then
-        verify(projectSkillRepository, times(2)).save(any(ProjectSkill.class));
-        // delete 메소드에 전달된 인수들을 포착
-        verify(projectSkillRepository, times(2)).delete(skillCaptor.capture());
+        verify(projectImgRepository, times(1)).findByProject(project);
+        verify(projectImgRepository, times(2)).save(any(ProjectImg.class));
+        verify(projectImgRepository, times(2)).delete(imgCaptor.capture());
 
-        // 포착된 인수들의 리스트를 가져옴
-        List<ProjectSkill> capturedSkills = skillCaptor.getAllValues();
-
-        // 특정 skill1, skill2가 포착된 인수들 중에 있는지 확인
-        assertTrue(capturedSkills.contains(skill1));
-        assertTrue(capturedSkills.contains(skill2));
+        List<ProjectImg> capturedImgList = imgCaptor.getAllValues();
+        assertTrue(capturedImgList.contains(projectImg1));
+        assertTrue(capturedImgList.contains(projectImg2));
     }
 }
