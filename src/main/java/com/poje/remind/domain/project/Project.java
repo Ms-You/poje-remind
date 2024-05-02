@@ -42,8 +42,9 @@ public class Project extends BaseEntity {
     private ProjectAward projectAward;
 
     @Builder
-    private Project(String name, String duration, String description,
+    private Project(Long id, String name, String duration, String description,
                     String belong, String link, Portfolio portfolio) {
+        this.id = id;
         this.name = name;
         this.duration = duration;
         this.description = description;
