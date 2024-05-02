@@ -10,12 +10,14 @@ public class JobDTO {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class CreateReq {
         private String name;
     }
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class UpdateReq {
         private String name;
     }

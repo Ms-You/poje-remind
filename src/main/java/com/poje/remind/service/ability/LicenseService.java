@@ -36,6 +36,7 @@ public class LicenseService {
                 .name(createReq.getName())
                 .issueInstitution(createReq.getIssueInstitution())
                 .issueDate(createReq.getIssueDate())
+                .owner(owner)
                 .build();
 
         licenseRepository.save(license);
