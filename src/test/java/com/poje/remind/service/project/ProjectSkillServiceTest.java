@@ -5,18 +5,19 @@ import com.poje.remind.domain.Member.RoleType;
 import com.poje.remind.domain.ability.Job;
 import com.poje.remind.domain.portfolio.Portfolio;
 import com.poje.remind.domain.project.Project;
-import com.poje.remind.domain.project.ProjectAward;
-import com.poje.remind.domain.project.dto.ProjectAwardDTO;
+import com.poje.remind.domain.project.ProjectSkill;
+import com.poje.remind.domain.project.dto.ProjectSkillDTO;
 import com.poje.remind.repository.ability.JobRepository;
 import com.poje.remind.repository.member.MemberRepository;
 import com.poje.remind.repository.portfolio.PortfolioRepository;
-import com.poje.remind.repository.project.ProjectAwardRepository;
 import com.poje.remind.repository.project.ProjectRepository;
+import com.poje.remind.repository.project.ProjectSkillRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -26,23 +27,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@Import(ProjectAwardService.class)
-class ProjectAwardServiceTest {
+@Import(ProjectSkillService.class)
+class ProjectSkillServiceTest {
 
     @Autowired
-    private ProjectAwardService projectAwardService;
+    private ProjectSkillService projectSkillService;
 
     @MockBean
-    private ProjectAwardRepository projectAwardRepository;
-
-    @MockBean
-    private ProjectRepository projectRepository;
+    private ProjectSkillRepository projectSkillRepository;
 
     @MockBean
     private MemberRepository memberRepository;
@@ -52,6 +51,9 @@ class ProjectAwardServiceTest {
 
     @MockBean
     private JobRepository jobRepository;
+
+    @MockBean
+    private ProjectRepository projectRepository;
 
     @MockBean
     private BCryptPasswordEncoder passwordEncoder;
@@ -101,6 +103,10 @@ class ProjectAwardServiceTest {
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
 
+        when(memberRepository.findByLoginId(member.getLoginId())).thenReturn(Optional.of(member));
+        when(jobRepository.findByName(job.getName())).thenReturn(Optional.of(job));
+        when(portfolioRepository.findById(portfolio.getId())).thenReturn(Optional.of(portfolio));
+
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.getName()).thenReturn(member.getLoginId());
 
@@ -114,15 +120,41 @@ class ProjectAwardServiceTest {
 
 
     @Test
-    @DisplayName("프로젝트 수상 정보 수정 테스트")
-    void updateAward() {
+    @DisplayName("프로젝트 스킬 수정 테스트")
+    void updateSkill() {
         // given
-        ProjectAwardDTO.UpdateReq updateReq = new ProjectAwardDTO.UpdateReq("주최 기관", "수상 등급", "상세 설명");
+        ProjectSkill skill1 = ProjectSkill.builder()
+                .name("PYTHON")
+                .project(project)
+                .build();
+
+        ProjectSkill skill2 = ProjectSkill.builder()
+                .name("DJANGO")
+                .project(project)
+                .build();
+
+        List<ProjectSkillDTO.UpdateReq> updateReqList = List.of(
+                new ProjectSkillDTO.UpdateReq("JAVA"),
+                new ProjectSkillDTO.UpdateReq("SPRING"));
+
+        // ArgumentCaptor 생성
+        ArgumentCaptor<ProjectSkill> skillCaptor = ArgumentCaptor.forClass(ProjectSkill.class);
 
         // when
-        projectAwardService.updateAward(project, updateReq);
+        when(projectSkillRepository.findByProject(project)).thenReturn(List.of(skill1, skill2));
+        projectSkillService.updateSkill(project, updateReqList);
 
         // then
-        verify(projectAwardRepository, times(1)).save(any(ProjectAward.class));
+        verify(projectSkillRepository, times(2)).delete(any(ProjectSkill.class));
+        verify(projectSkillRepository, times(2)).save(any(ProjectSkill.class));
+        // delete 메소드에 전달된 인수들을 포착
+        verify(projectSkillRepository, times(2)).delete(skillCaptor.capture());
+
+        // 포착된 인수들의 리스트를 가져옴
+        List<ProjectSkill> capturedSkills = skillCaptor.getAllValues();
+
+        // 특정 skill1, skill2가 포착된 인수들 중에 있는지 확인
+        assertTrue(capturedSkills.contains(skill1));
+        assertTrue(capturedSkills.contains(skill2));
     }
 }
